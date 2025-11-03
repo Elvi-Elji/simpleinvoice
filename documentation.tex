@@ -59,7 +59,7 @@
 	framexleftmargin=2.4em,
 	showstringspaces=false,
 	language=TeX,
-	morekeywords={\documentclass,\begin,\end,\usepackage,\makeinvoice,\setinvoicetitle,\setinvoicenumber,\setreceivername,\setreceiveraddress,\setname,\setaddress,\setphonenumber,\setemail,\setyourref,\setourref,\setinvoicedate,\setdeadline,\additem,\setsubtotal,\setvat,\settotal,\setaccountnumber, \setsummary, \setcurrency, \setvattext, \setaccounttext},
+	morekeywords={\documentclass,\begin,\end,\usepackage,\makeinvoice,\setcurrencysignfirst,\setinvoicetitle,\setinvoicenumber,\setreceivername,\setreceiveraddress,\setname,\setaddress,\setphonenumber,\setemail,\setyourref,\setourref,\setinvoicedate,\setdeadline,\additem,\setsubtotal,\setvat,\settotal,\setaccountnumber, \setsummary, \setcurrency, \setvattext, \setaccounttext},
 	commentstyle=\color{source_brown}\ttfamily,
 	keywordstyle=\color{source_blue}\ttfamily,
 	stringstyle=\color{source_orange},
@@ -97,12 +97,13 @@
 \chapter{Package overview}
 The \texttt{simpleinvoice} package lets you easily typeset professional-looking invoices, and makes sure that all the legally required information is on the invoice.
 
-The package respects the global language set in the document, or can be loaded with another language specified. The languages currently supported are English, Norwegian (bokmål), French and German.
+The package respects the global language set in the document, or can be loaded with another language specified. The languages currently supported are English, Norwegian (bokmål), French, Dutch and German.
 
 
 Following are a list of all available commands, detailed description are available in \cref{sec:commanddetails}.
 
 \begin{itemize}
+	\item \nameref{par:setcurrencysignfirst}
 	\item \nameref{par:setinvoicenumber}
 	\item \nameref{par:setreceivername}
 	\item \nameref{par:setreceiveraddress}
@@ -151,9 +152,16 @@ The package is loaded with the \verb|\usepackage| command. If no language is spe
 \end{document}
 \end{lstlisting}
 
-
 \section{Description of all available commands}
 \label{sec:commanddetails}
+
+\subsection{{\textbackslash}setcurrencysignfirst} \label{par:setcurrencysignfirst}
+Overrides the standard value of the "currencysignfirst" variable. Set as a default to no, if it is set to yes, all the amounts will be printed with the currency sign before the amount ("\$ 3" instead of "3 \$")
+Example:
+\begin{lstlisting}
+\setcurrencysignfirst{yes}
+\end{lstlisting}
+
 \subsection{{\textbackslash}setinvoicetitle}
 Overrides the standard title of the invoice. Optional command. Takes one argument: the new title.
 Example:
