@@ -131,7 +131,7 @@
 \def \INV@text@accountnum {\csname INV@text@accountnum@\INV@lang \endcsname}
 \def \INV@text@warning {\csname INV@text@warning@\INV@lang \endcsname}
 \def \INV@text@currency {}
-
+\def \INV@text@currencysignfirst {no}
 
 % Import neccesary libraries
 \RequirePackage{advdate}
@@ -160,6 +160,9 @@
 
 % Commands
 \RequirePackage{etoolbox}
+
+% If/then/else statements
+\RequirePackage{ifthen}
 
 % Line seperator
 \newcommand{\linesep}{\vspace{6pt} {\color{linecolor}\hrule} \vspace{6pt}}
@@ -195,7 +198,10 @@
 \newcommand{\setourref}[1]{\def \INV@content@ourref {#1}}
 \newcommand{\setinvoicedate}[1]{\def \INV@content@date {#1}}
 \newcommand{\setdeadline}[1]{\def \INV@content@deadline {\DayAfter[#1]}}
-\newcommand{\additem}[4]{\ifdef{\INV@content@list}{\appto \INV@content@list {\\ #1 & #2 \INV@text@currency & #3 \% & #4 \INV@text@currency}}{\def \INV@content@list {#1 & #2 \INV@text@currency& #3 \% & #4 \INV@text@currency}}}
+\newcommand{\setcurrencysignfirst}[1]{\def \INV@text@currencysignfirst {#1}}
+% command to print the values as '$ 3' or '3 $'
+\newcommand{\printcurrencyvalue}[1]{\ifthenelse{\equal{\INV@text@currencysignfirst}{no}}{#1 \INV@text@currency}{\INV@text@currency{} #1}}
+\newcommand{\additem}[4]{\ifdef{\INV@content@list}{\appto \INV@content@list {\\ #1 & \printcurrencyvalue{#2} & #3 \% & \printcurrencyvalue{#4}}}{\def \INV@content@list {#1 & \printcurrencyvalue{#2}& #3 \% & \printcurrencyvalue{#4}}}}
 \newcommand{\setsubtotal}[1]{\def \INV@content@subtotal {#1}}
 \newcommand{\setvat}[1]{\def \INV@content@vat {#1}}
 \newcommand{\settotal}[1]{\def \INV@content@total {#1}}
@@ -244,9 +250,9 @@
 	\hfill
 	\renewcommand{\arraystretch}{1}
 	\begin{tabular}{r r}
-		\csname INV@text@subtotal\endcsname: \hspace{10pt} & \INV@content@subtotal \INV@text@currency\\
-		\csname INV@text@vat\endcsname: \hspace{10pt} & \INV@content@vat \INV@text@currency\\
-		{\Large \csname INV@text@total\endcsname: \hspace{10pt}} & {\Large \INV@content@total \INV@text@currency}
+		\csname INV@text@subtotal\endcsname: \hspace{10pt} & \printcurrencyvalue{\INV@content@subtotal}\\
+		\csname INV@text@vat\endcsname: \hspace{10pt} & \printcurrencyvalue{\INV@content@vat}\\
+		{\Large \csname INV@text@total\endcsname: \hspace{10pt}} & {\Large \printcurrencyvalue{\INV@content@total}}
 	\end{tabular}
 
 	\vfill
@@ -256,7 +262,7 @@
 		\linesep
 		\begin{tabularx}{\textwidth}{X r}
 			\csname INV@text@invnum\endcsname: & \INV@content@num  \\
-			\csname INV@text@totallong\endcsname: & \INV@content@total \INV@text@currency\\
+			\csname INV@text@totallong\endcsname: & \printcurrencyvalue{\INV@content@total}\\
 			\csname INV@text@accountnum\endcsname: & \INV@content@accountnum
 		\end{tabularx}
 
